@@ -31,9 +31,9 @@
             <section class="playlist">
                 <h2>Şarkı Listesi</h2>
                 <ul id="song-list">
-                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Şarkı 1</li>
-                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Şarkı 2</li>
-                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Şarkı 3</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" class="song-item">Şarkı 1</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" class="song-item">Şarkı 2</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" class="song-item">Şarkı 3</li>
                 </ul>
             </section>
 
@@ -84,10 +84,26 @@
                     audioPlayer.src = fileData;
                     currentSongLabel.textContent = file.name;
                     audioPlayer.play();
+
+                    // Playlist'teki şarkıyı değiştiriyoruz
+                    updatePlaylistWithUploadedSong(file);
                 };
                 reader.readAsDataURL(file); // Dosyayı Base64 olarak okuyoruz
             }
         });
+
+        // Playlist'teki şarkıyı değiştirme fonksiyonu
+        function updatePlaylistWithUploadedSong(file) {
+            const songListItems = document.querySelectorAll(".song-item");
+
+            // Playlist'teki ilk şarkının ses dosyasını, yüklenen dosyayla değiştiriyoruz
+            if (songListItems.length > 0) {
+                // Playlistteki ilk şarkıyı alıyoruz
+                const firstSong = songListItems[0];
+                firstSong.setAttribute("data-src", URL.createObjectURL(file)); // Yüklenen dosyanın URL'sini setliyoruz
+                firstSong.textContent = file.name; // Şarkı ismini de güncelliyoruz
+            }
+        }
 
         // Sayfa yüklendiğinde Local Storage'dan veriyi alıyoruz
         document.addEventListener("DOMContentLoaded", () => {
@@ -98,6 +114,7 @@
                 // Daha önce yüklenen şarkıyı geri yüklüyoruz
                 audioPlayer.src = storedFile;
                 currentSongLabel.textContent = storedFileName || "Bilinmeyen Şarkı";
+                updatePlaylistWithUploadedSong({ name: storedFileName });
             }
         });
     </script>
