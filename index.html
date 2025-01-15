@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dosya Yükleme</title>
-</head>
-<body>
-    <h1>Dosya Yükleme Platformu</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file">Bir dosya seçin:</label>
-        <input type="file" id="file" name="file" />
-        <button type="submit">Yükle</button>
-    </form>
-</body>
-</html>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Müzik Temalı Site</title>
@@ -36,7 +19,6 @@
                     <p><strong>Şu an çalıyor:</strong> <span id="current-song">Henüz bir şarkı seçilmedi</span></p>
                 </div>
                 <audio id="audio-player" controls>
-                    <source id="audio-source" src="my-song.mp3" type="audio/mpeg">
                     Tarayıcınız ses dosyalarını desteklemiyor.
                 </audio>
                 <div class="controls">
@@ -82,24 +64,42 @@
             </aside>
         </main>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statik Çözüm: Müzik Çalar</title>
-</head>
-<body>
-    <h1>Müzik Çalar</h1>
-    <p><strong>Şu an çalıyor:</strong> <span id="current-song">Henüz bir şarkı seçilmedi</span></p>
-    <audio id="audio-player" controls>
-        Tarayıcınız ses dosyalarını desteklemiyor.
-    </audio>
-    <br>
-    <input type="file" id="file-input" accept="audio/*">
-    <script src="script.js"></script>
+
+    <script>
+        const fileInput = document.getElementById("file-input");
+        const audioPlayer = document.getElementById("audio-player");
+        const currentSongLabel = document.getElementById("current-song");
+
+        // Dosya yüklendiğinde çalışacak olay
+        fileInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const fileData = e.target.result;
+                    localStorage.setItem("uploadedFile", fileData); // Dosyayı Local Storage'a kaydediyoruz
+                    localStorage.setItem("uploadedFileName", file.name); // Dosya adını kaydediyoruz
+
+                    // Şarkıyı çalmaya başlıyoruz
+                    audioPlayer.src = fileData;
+                    currentSongLabel.textContent = file.name;
+                    audioPlayer.play();
+                };
+                reader.readAsDataURL(file); // Dosyayı Base64 olarak okuyoruz
+            }
+        });
+
+        // Sayfa yüklendiğinde Local Storage'dan veriyi alıyoruz
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedFile = localStorage.getItem("uploadedFile");
+            const storedFileName = localStorage.getItem("uploadedFileName");
+
+            if (storedFile) {
+                // Daha önce yüklenen şarkıyı geri yüklüyoruz
+                audioPlayer.src = storedFile;
+                currentSongLabel.textContent = storedFileName || "Bilinmeyen Şarkı";
+            }
+        });
+    </script>
 </body>
 </html>
