@@ -10,6 +10,7 @@
     <div class="container">
         <header>
             <h1>Müzik Platformu</h1>
+            <button id="toggleMode">Aydınlık Moda Geç</button>
         </header>
         <main>
             <section class="player">
@@ -20,59 +21,48 @@
                 <audio id="audio-player" controls>
                     Tarayıcınız ses dosyalarını desteklemiyor.
                 </audio>
-                <div class="controls">
-                    <button id="play-song">Çal</button>
-                    <button id="pause-song">Duraklat</button>
-                </div>
-                <input type="file" id="file-input" accept="audio/*">
             </section>
 
             <section class="playlist">
                 <h2>Şarkı Listesi</h2>
                 <ul id="song-list">
-                    <audio controls>
-    <source src="https://drive.google.com/uc?export=download&id=1vh5FHUhQvkaxZlXJx--tDMF8PVKqrC2P" type="audio/mpeg">
-    Tarayıcınız bu ses dosyasını desteklemiyor.
-</audio>
-
-                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" class="song-item">Şarkı 2</li>
-                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" class="song-item">Şarkı 3</li>
+                    <li data-src="https://drive.google.com/uc?export=download&id=1vh5FHUhQvkaxZlXJx--tDMF8PVKqrC2P" class="song-item">
+                        Yeni Şarkı
+                    </li>
                 </ul>
             </section>
         </main>
     </div>
 
     <script>
-        const fileInput = document.getElementById("file-input");
         const audioPlayer = document.getElementById("audio-player");
         const currentSongLabel = document.getElementById("current-song");
+        const songList = document.getElementById("song-list");
 
-        // Dosya yüklendiğinde çalışacak olay
-        fileInput.addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const fileData = e.target.result;
+        // Şarkı listesine tıklama olayı ekle
+        songList.addEventListener("click", (e) => {
+            const target = e.target;
+            if (target.tagName === "LI") {
+                const songSrc = target.getAttribute("data-src");
+                const songName = target.textContent;
 
-                    // Yüklediğimiz şarkıyı "Şarkı 1" ile değiştirme
-                    updateSongListWithUploadedFile(fileData, file.name);
-
-                    // Şarkıyı çalmaya başlıyoruz
-                    audioPlayer.src = fileData;
-                    currentSongLabel.textContent = file.name;
-                    audioPlayer.play();
-                };
-                reader.readAsDataURL(file); // Dosyayı Base64 olarak okuyoruz
+                audioPlayer.src = songSrc;
+                currentSongLabel.textContent = songName;
+                audioPlayer.play();
             }
         });
 
-        // Şarkı 1'i yüklenen şarkı ile günceller
-        function updateSongListWithUploadedFile(fileData, fileName) {
-            const firstSongItem = document.querySelector(".song-item"); // Şarkı 1'i seçiyoruz
-            firstSongItem.setAttribute("data-src", fileData); // Yüklediğimiz dosyanın URL'sini setliyoruz
-            firstSongItem.textContent = fileName; // Şarkı adını güncelliyoruz
-        }
+        // Varsayılan şarkıyı başlat
+        document.addEventListener("DOMContentLoaded", () => {
+            const firstSong = songList.querySelector(".song-item");
+            if (firstSong) {
+                const songSrc = firstSong.getAttribute("data-src");
+                const songName = firstSong.textContent;
+
+                audioPlayer.src = songSrc;
+                currentSongLabel.textContent = songName;
+            }
+        });
     </script>
 </body>
 </html>
