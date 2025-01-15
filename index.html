@@ -85,23 +85,22 @@
                     currentSongLabel.textContent = file.name;
                     audioPlayer.play();
 
-                    // Playlist'teki şarkıyı değiştiriyoruz
-                    updatePlaylistWithUploadedSong(file);
+                    // Şarkı 1'i silip yeni dosyayı ekliyoruz
+                    updateSongListWithUploadedFile(file);
                 };
                 reader.readAsDataURL(file); // Dosyayı Base64 olarak okuyoruz
             }
         });
 
-        // Playlist'teki şarkıyı değiştirme fonksiyonu
-        function updatePlaylistWithUploadedSong(file) {
+        // Şarkı 1'i silip yüklenen şarkıyı ekliyoruz
+        function updateSongListWithUploadedFile(file) {
             const songListItems = document.querySelectorAll(".song-item");
 
-            // Playlist'teki ilk şarkının ses dosyasını, yüklenen dosyayla değiştiriyoruz
+            // Şarkı listesinde sadece "Şarkı 1"i değiştireceğiz
             if (songListItems.length > 0) {
-                // Playlistteki ilk şarkıyı alıyoruz
-                const firstSong = songListItems[0];
+                const firstSong = songListItems[0]; // Şarkı 1
                 firstSong.setAttribute("data-src", URL.createObjectURL(file)); // Yüklenen dosyanın URL'sini setliyoruz
-                firstSong.textContent = file.name; // Şarkı ismini de güncelliyoruz
+                firstSong.textContent = file.name; // Şarkı adını güncelliyoruz
             }
         }
 
@@ -114,7 +113,7 @@
                 // Daha önce yüklenen şarkıyı geri yüklüyoruz
                 audioPlayer.src = storedFile;
                 currentSongLabel.textContent = storedFileName || "Bilinmeyen Şarkı";
-                updatePlaylistWithUploadedSong({ name: storedFileName });
+                updateSongListWithUploadedFile({ name: storedFileName });
             }
         });
     </script>
