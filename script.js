@@ -131,3 +131,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+const fileInput = document.getElementById("file-input");
+const audioPlayer = document.getElementById("audio-player");
+
+fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const fileData = e.target.result;
+
+            // Yüklenen dosyayı tarayıcı belleğine kaydet
+            localStorage.setItem("uploadedFile", fileData);
+            localStorage.setItem("uploadedFileName", file.name);
+
+            // Çalmak için src'yi ayarla
+            audioPlayer.src = fileData;
+            audioPlayer.play();
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Sayfa yüklendiğinde kontrol et
+document.addEventListener("DOMContentLoaded", () => {
+    const storedFile = localStorage.getItem("uploadedFile");
+    const storedFileName = localStorage.getItem("uploadedFileName");
+    if (storedFile) {
+        document.getElementById("current-song").textContent = storedFileName;
+        audioPlayer.src = storedFile;
+    }
+});
+
