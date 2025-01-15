@@ -35,32 +35,6 @@
                     <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" class="song-item">Şarkı 3</li>
                 </ul>
             </section>
-
-            <section class="albums">
-                <h2>Albüm Kapakları</h2>
-                <div class="album-grid">
-                    <div class="album">
-                        <img src="https://picsum.photos/150?random=1" alt="Albüm 1">
-                        <p>Albüm 1</p>
-                    </div>
-                    <div class="album">
-                        <img src="https://picsum.photos/150?random=2" alt="Albüm 2">
-                        <p>Albüm 2</p>
-                    </div>
-                    <div class="album">
-                        <img src="https://picsum.photos/150?random=3" alt="Albüm 3">
-                        <p>Albüm 3</p>
-                    </div>
-                </div>
-            </section>
-
-            <aside class="queue">
-                <h2>Sıradaki Şarkılar</h2>
-                <ul>
-                    <li>Şarkı 1</li>
-                    <li>Şarkı 2</li>
-                </ul>
-            </aside>
         </main>
     </div>
 
@@ -76,45 +50,25 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const fileData = e.target.result;
-                    localStorage.setItem("uploadedFile", fileData); // Dosyayı Local Storage'a kaydediyoruz
-                    localStorage.setItem("uploadedFileName", file.name); // Dosya adını kaydediyoruz
+
+                    // Yüklediğimiz şarkıyı "Şarkı 1" ile değiştirme
+                    updateSongListWithUploadedFile(fileData, file.name);
 
                     // Şarkıyı çalmaya başlıyoruz
                     audioPlayer.src = fileData;
                     currentSongLabel.textContent = file.name;
                     audioPlayer.play();
-
-                    // Şarkı 1'i silip yeni dosyayı ekliyoruz
-                    updateSongListWithUploadedFile(file);
                 };
                 reader.readAsDataURL(file); // Dosyayı Base64 olarak okuyoruz
             }
         });
 
-        // Şarkı 1'i silip yüklenen şarkıyı ekliyoruz
-        function updateSongListWithUploadedFile(file) {
-            const songListItems = document.querySelectorAll(".song-item");
-
-            // Şarkı listesinde sadece "Şarkı 1"i değiştireceğiz
-            if (songListItems.length > 0) {
-                const firstSong = songListItems[0]; // Şarkı 1
-                firstSong.setAttribute("data-src", URL.createObjectURL(file)); // Yüklenen dosyanın URL'sini setliyoruz
-                firstSong.textContent = file.name; // Şarkı adını güncelliyoruz
-            }
+        // Şarkı 1'i yüklenen şarkı ile günceller
+        function updateSongListWithUploadedFile(fileData, fileName) {
+            const firstSongItem = document.querySelector(".song-item"); // Şarkı 1'i seçiyoruz
+            firstSongItem.setAttribute("data-src", fileData); // Yüklediğimiz dosyanın URL'sini setliyoruz
+            firstSongItem.textContent = fileName; // Şarkı adını güncelliyoruz
         }
-
-        // Sayfa yüklendiğinde Local Storage'dan veriyi alıyoruz
-        document.addEventListener("DOMContentLoaded", () => {
-            const storedFile = localStorage.getItem("uploadedFile");
-            const storedFileName = localStorage.getItem("uploadedFileName");
-
-            if (storedFile) {
-                // Daha önce yüklenen şarkıyı geri yüklüyoruz
-                audioPlayer.src = storedFile;
-                currentSongLabel.textContent = storedFileName || "Bilinmeyen Şarkı";
-                updateSongListWithUploadedFile({ name: storedFileName });
-            }
-        });
     </script>
 </body>
 </html>
