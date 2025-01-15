@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müzik Temalı Site</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Müzik Platformu</h1>
+            <button id="toggleMode">Aydınlık Moda Geç</button>
+        </header>
+        <main>
+            <section class="player">
+                <h2>Şarkı Çalar</h2>
+                <div id="song-info">
+                    <p><strong>Şu an çalıyor:</strong> <span id="current-song">Henüz bir şarkı seçilmedi</span></p>
+                </div>
+                <audio id="audio-player" controls>
+                    <source id="audio-source" src="" type="audio/mpeg">
+                    Tarayıcınız ses dosyalarını desteklemiyor.
+                </audio>
+                <div class="controls">
+                    <button id="play-song">Çal</button>
+                    <button id="pause-song">Duraklat</button>
+                </div>
+                <input type="file" id="file-input" accept="audio/*">
+            </section>
+
+            <section class="playlist">
+                <h2>Şarkı Listesi</h2>
+                <ul id="song-list">
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Şarkı 1</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Şarkı 2</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Şarkı 3</li>
+                </ul>
+            </section>
+
+            <section class="albums">
+                <h2>Albüm Kapakları</h2>
+                <div class="album-grid">
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=1" alt="Albüm 1">
+                        <p>Albüm 1</p>
+                    </div>
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=2" alt="Albüm 2">
+                        <p>Albüm 2</p>
+                    </div>
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=3" alt="Albüm 3">
+                        <p>Albüm 3</p>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="queue">
+                <h2>Sıradaki Şarkılar</h2>
+                <ul>
+                    <li>Şarkı 1</li>
+                    <li>Şarkı 2</li>
+                </ul>
+            </aside>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
