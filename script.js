@@ -131,38 +131,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-const fileInput = document.getElementById("file-input");
-const audioPlayer = document.getElementById("audio-player");
-const currentSongLabel = document.getElementById("current-song");
-
-// Dosya yüklendiğinde çalışacak olay
-fileInput.addEventListener("change", (event) => {
-    const file = event.target.files[0]; // Yüklenen dosyayı al
-    if (file) {
-        const reader = new FileReader(); // Dosyayı tarayıcıda okumak için FileReader
-        reader.onload = function (e) {
-            const fileData = e.target.result; // Base64 formatındaki veri
-            localStorage.setItem("uploadedFile", fileData); // Veriyi Local Storage'a kaydet
-            localStorage.setItem("uploadedFileName", file.name); // Dosya adını kaydet
-
-            // Ses oynatıcısını güncelle
-            audioPlayer.src = fileData;
-            currentSongLabel.textContent = file.name;
-            audioPlayer.play();
-        };
-        reader.readAsDataURL(file); // Dosyayı Base64 olarak oku
-    }
-});
-
-// Sayfa yüklendiğinde Local Storage'dan veriyi al
-document.addEventListener("DOMContentLoaded", () => {
-    const storedFile = localStorage.getItem("uploadedFile");
-    const storedFileName = localStorage.getItem("uploadedFileName");
-
-    if (storedFile) {
-        audioPlayer.src = storedFile;
-        currentSongLabel.textContent = storedFileName || "Bilinmeyen Şarkı";
-    }
-});
-
-
