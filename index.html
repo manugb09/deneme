@@ -19,51 +19,53 @@
                     <p><strong>Şu an çalıyor:</strong> <span id="current-song">Henüz bir şarkı seçilmedi</span></p>
                 </div>
                 <audio id="audio-player" controls>
+                    <source id="audio-source" src="" type="audio/mpeg">
                     Tarayıcınız ses dosyalarını desteklemiyor.
                 </audio>
+                <div class="controls">
+                    <button id="play-song">Çal</button>
+                    <button id="pause-song">Duraklat</button>
+                </div>
+                <input type="file" id="file-input" accept="audio/*">
             </section>
 
             <section class="playlist">
                 <h2>Şarkı Listesi</h2>
                 <ul id="song-list">
-                    <!-- Eski şarkılar kaldırıldı -->
-                    <li data-src="https://drive.google.com/uc?export=download&id=1vh5FHUhQvkaxZlXJx--tDMF8PVKqrC2P" class="song-item">
-                        Benim Yüklediğim Şarkı
-                    </li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Şarkı 1</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Şarkı 2</li>
+                    <li data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Şarkı 3</li>
                 </ul>
             </section>
+
+            <section class="albums">
+                <h2>Albüm Kapakları</h2>
+                <div class="album-grid">
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=1" alt="Albüm 1">
+                        <p>Albüm 1</p>
+                    </div>
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=2" alt="Albüm 2">
+                        <p>Albüm 2</p>
+                    </div>
+                    <div class="album">
+                        <img src="https://picsum.photos/150?random=3" alt="Albüm 3">
+                        <p>Albüm 3</p>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="queue">
+                <h2>Sıradaki Şarkılar</h2>
+                <ul>
+                    <li>Şarkı 1</li>
+                    <li>Şarkı 2</li>
+                </ul>
+            </aside>
         </main>
     </div>
-
-    <script>
-        const audioPlayer = document.getElementById("audio-player");
-        const currentSongLabel = document.getElementById("current-song");
-        const songList = document.getElementById("song-list");
-
-        // Şarkı listesine tıklama olayı ekle
-        songList.addEventListener("click", (e) => {
-            const target = e.target;
-            if (target.tagName === "LI") {
-                const songSrc = target.getAttribute("data-src");
-                const songName = target.textContent;
-
-                audioPlayer.src = songSrc;
-                currentSongLabel.textContent = songName;
-                audioPlayer.play();
-            }
-        });
-
-        // Varsayılan şarkıyı başlat
-        document.addEventListener("DOMContentLoaded", () => {
-            const firstSong = songList.querySelector(".song-item");
-            if (firstSong) {
-                const songSrc = firstSong.getAttribute("data-src");
-                const songName = firstSong.textContent;
-
-                audioPlayer.src = songSrc;
-                currentSongLabel.textContent = songName;
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
+ 
